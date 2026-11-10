@@ -17,3 +17,24 @@ PlantVillage 数据审计、划分、Dataset/DataLoader/transforms、PlantDoc �
 main 为稳定分支；A 使用 `feature/model`；B 使用 `feature/data-demo`。
 开发前 `git pull`，提交只暂存自己负责的文件。通过 Pull Request 合并。
 不提交数据、模型权重、虚拟环境。每周至少一次集成测试。
+
+## Pull Request 规范
+所有 PR 必须按统一模板填写。标题格式：
+
+```
+[模块] 类型: 简述
+```
+
+- 模块：`A`（模型/训练）｜`B`（数据/应用）｜`公共`
+- 类型：`feat`｜`fix`｜`docs`｜`test`｜`refactor`｜`chore`
+- 简述：中文，动词开头，≤ 50 字
+
+示例：
+
+```
+[A] feat: 实现 ResNet18 冻结/微调训练
+[B] feat: 生成 70/15/15 分层划分与类别映射
+[公共] docs: 更新 PR 提交模板
+```
+
+正文模板已放在 `.github/PULL_REQUEST_TEMPLATE.md`，GitHub 会自动填充到 PR 描述框；按模块归属、变更文件、测试结果、未解决问题和检查清单逐项填写，不能留空（“无”也要写出来）。
