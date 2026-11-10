@@ -1,0 +1,9 @@
+# Install compatible torch/torchvision from https://pytorch.org/get-started/locally/
+numpy
+pandas
+Pillow
+scikit-learn
+matplotlib
+PyYAML
+tqdm
+pytest

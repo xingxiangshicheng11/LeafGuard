@@ -1,0 +1,33 @@
+project_name: LeafGuard
+seed: 42
+data:
+  plantvillage_root: data/plantvillage
+  plantdoc_root: data/plantdoc
+  split_dir: splits
+  train_ratio: 0.70
+  val_ratio: 0.15
+  test_ratio: 0.15
+  image_size: 224
+  num_workers: 4
+training:
+  batch_size: 32
+  epochs: 25
+  early_stopping_patience: 5
+  cnn_learning_rate: 0.001
+  classifier_learning_rate: 0.001
+  finetune_learning_rate: 0.0001
+  weight_decay: 0.0001
+  device: auto
+  amp: true
+augmentation:
+  enabled: true
+  horizontal_flip_probability: 0.5
+  random_resized_crop_scale: [0.8, 1.0]
+evaluation:
+  external_dataset_enabled: false
+outputs:
+  root: results
+  checkpoints: results/checkpoints
+  logs: results/logs
+  metrics: results/metrics
+  figures: results/figures
