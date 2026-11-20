@@ -11,11 +11,17 @@
 - 许可证：上游仓库未声明 License（GitHub API 返回 `license: null`），使用与再分发前需按课程要求核对
 - 引用：Mohanty, Hughes, Salathé (2016), *Using deep learning for image-based plant disease detection*, Frontiers in Plant Science, DOI 10.3389/fpls.2016.01419
 
-## PlantDoc（可选外部评估，尚未下载）
+## PlantDoc（外部评估集，已下载 test 划分）
 
 - 来源：https://github.com/pratikkayal/PlantDoc-Dataset
-- 仅作外部评估，不参与训练或调参
-- 类别不保证与 PlantVillage 一致，使用前先做人工类别映射审核
+- 版本：`master` @ `5467f6012d78d1c446145d5f582da6096f852ae8`（上游提交日期 2021-05-02）
+- 获取日期：2026-11-20
+- 使用范围：仅 `test` 划分，作为外部评估；不参与训练或调参
+- 本地相对路径：`data/plantdoc/<类别名>/<图片>`
+- 类别数：27；图片数：236（详见 `docs/plantdoc_mapping.md`）
+- 许可：CC BY 4.0
+- 引用：Singh, Jain, Jain, Kayal, Kumawat, Batra (2020), *PlantDoc: A Dataset for Visual Plant Disease Detection*, CoDS-COMAD 2020, DOI 10.1145/3371158.3371196
+- 类映射：`splits/plantdoc_class_map.json`；外部评估清单：`splits/plantdoc_eval.csv`
 
 ## 获取方式
 

@@ -11,6 +11,7 @@ splits/*
 !splits/.gitkeep
 !splits/*.csv
 !splits/class_to_idx.json
+!splits/plantdoc_class_map.json
 *.pth
 *.pt
 *.ckpt

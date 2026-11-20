@@ -65,4 +65,25 @@ python scripts/build_splits.py --seed 42
 ```
 
 - 扫描报告：`results/data_scan.json`（Git 忽略）
-- 划分结果：`splits/train.csv`、`splits/val.csv`、`splits/test.csv`、`splits/class_to_idx.json`（Git 忽略）
+- 划分结果：`splits/train.csv`、`splits/val.csv`、`splits/test.csv`、`splits/class_to_idx.json`（已提交）
+
+## PlantDoc 外部评估集审计
+
+- 来源版本：`pratikkayal/PlantDoc-Dataset` `master` @ `5467f6012d78d1c446145d5f582da6096f852ae8`
+- 获取日期：2026-11-20
+- 使用划分：仅 `test`
+- 类别数：27
+- 图片数：236
+- 损坏图片：0
+- 重复图片：0
+- 文件名处理：5 个含 `?` 的文件已重命名（`?` → `_`），详见 `docs/plantdoc_mapping.md`
+- 类别映射：`splits/plantdoc_class_map.json`（27/27 类可映射到 PlantVillage 38 类）
+- 外部评估清单：`splits/plantdoc_eval.csv`
+- 用途限制：仅外部评估，不参与训练或调参
+
+复现：
+
+```powershell
+python scripts/scan_dataset.py --data-root data/plantdoc
+python scripts/build_plantdoc_eval.py
+```
