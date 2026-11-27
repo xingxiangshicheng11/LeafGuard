@@ -15,7 +15,7 @@ python scripts/serve_demo.py --checkpoint results/seed42/e3/checkpoints/resnet18
 - `--device auto|cpu|cuda`：推理设备；`--port`：端口
 - 类别默认以中文显示（中英对照见 `splits/class_to_zh.json`，可用 `--zh-map` 指定其它映射）
 - 分数为 softmax 值，不是校准后的诊断概率；仅用于演示
-- **OOD 拒识**：当最大置信度偏低、或 energy 分数偏高（疑似不属于支持的 38 类）时，显示“无法可靠识别”，不给具体类别。阈值需先在验证集标定：
+- **OOD 拒识**：当最大置信度偏低、或 energy 分数偏高（疑似不属于当前支持的类别范围，如 132 类）时，显示“无法可靠识别”，不给具体类别。阈值需先在验证集标定：
   ```powershell
   python scripts/calibrate_ood.py --checkpoint results/seed42/e3/checkpoints/resnet18_best.pt
   ```
@@ -36,7 +36,7 @@ python scripts/serve_demo.py --checkpoint results/combined132/seed42/e3/checkpoi
   ```powershell
   python scripts/calibrate_ood.py --checkpoint results/combined132/seed42/e3/checkpoints/resnet18_best.pt --split splits_combined/val.csv
   ```
-- 支持约 34 种作物（含小麦、柑橘、香蕉、咖啡、水稻、烟草、黄瓜、茄子等），比 38 类版覆盖更广。
+- 支持约 34 种作物（含小麦、柑橘、香蕉、咖啡、水稻、烟草、黄瓜、茄子等），比旧 38 类（仅 PlantVillage）版覆盖更广。
 
 ## 1. 单图预测
 
