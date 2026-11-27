@@ -1,16 +1,107 @@
 # 成员 B：数据审计记录
 
-- 数据集来源：
-- 下载日期/版本：
-- 本地相对路径：
-- 图片总数：
-- 类别总数：
-- 损坏图片数：
-- 重复文件数：
-- 各类别样本量：
-- 类别映射文件：
-- train/val/test 比例与样本数：
-- 跨 split 重复检查：
-- 排除样本及原因：
+- 数据集来源：PlantVillage-Dataset（`spMohanty/PlantVillage-Dataset`），使用 `raw/color` 彩色原图
+- 下载日期/版本：2026-11-11，`master` @ `7f7ecc7e1eaca78107e3affe7cb5abd9427e139a`
+- 本地相对路径：`data/plantvillage`
+- 图片总数：54305
+- 类别总数：38
+- 损坏图片数：0
+- 重复文件数：21（类内完全重复副本；跨类完全重复 0 组）
+- 近重复图片：226 组 / 481 张（64-bit dHash，Hamming ≤ 4；跨类组 33 组仅记录、不合并）
+- 类别映射文件：`splits/class_to_idx.json`
+- train/val/test 比例与样本数：70.0/15.0/15.0 → 37978 / 8155 / 8151（去除 21 个完全重复副本后，可用图片 54284）
+- 跨 split 重复检查：完全重复图片跨 split 0；近重复组跨 split 0（旧图片级划分为 109 组 / 232 张）
+- 排除样本及原因：21 个类内完全重复副本（SHA-256 相同，保留每类字典序第一个）；无损坏图片；近重复图片保留，但整组进入同一 split
+- 引用：Mohanty, Hughes, Salathé (2016), *Using deep learning for image-based plant disease detection*, Frontiers in Plant Science, DOI 10.3389/fpls.2016.01419
+- 许可说明：上游 GitHub 仓库未声明 License（API 返回 `license: null`），使用与再分发前需与项目要求核对
 
-未扫描前不要填写推测数值。
+## 各类别样本量（扫描有效图片数）
+
+| 类别 | 图片数 |
+|---|---|
+| Apple___Apple_scab | 630 |
+| Apple___Black_rot | 621 |
+| Apple___Cedar_apple_rust | 275 |
+| Apple___healthy | 1645 |
+| Blueberry___healthy | 1502 |
+| Cherry_(including_sour)___healthy | 854 |
+| Cherry_(including_sour)___Powdery_mildew | 1052 |
+| Corn_(maize)___Cercospora_leaf_spot Gray_leaf_spot | 513 |
+| Corn_(maize)___Common_rust_ | 1192 |
+| Corn_(maize)___healthy | 1162 |
+| Corn_(maize)___Northern_Leaf_Blight | 985 |
+| Grape___Black_rot | 1180 |
+| Grape___Esca_(Black_Measles) | 1383 |
+| Grape___healthy | 423 |
+| Grape___Leaf_blight_(Isariopsis_Leaf_Spot) | 1076 |
+| Orange___Haunglongbing_(Citrus_greening) | 5507 |
+| Peach___Bacterial_spot | 2297 |
+| Peach___healthy | 360 |
+| Pepper,_bell___Bacterial_spot | 997 |
+| Pepper,_bell___healthy | 1478 |
+| Potato___Early_blight | 1000 |
+| Potato___healthy | 152 |
+| Potato___Late_blight | 1000 |
+| Raspberry___healthy | 371 |
+| Soybean___healthy | 5090 |
+| Squash___Powdery_mildew | 1835 |
+| Strawberry___healthy | 456 |
+| Strawberry___Leaf_scorch | 1109 |
+| Tomato___Bacterial_spot | 2127 |
+| Tomato___Early_blight | 1000 |
+| Tomato___healthy | 1591 |
+| Tomato___Late_blight | 1909 |
+| Tomato___Leaf_Mold | 952 |
+| Tomato___Septoria_leaf_spot | 1771 |
+| Tomato___Spider_mites Two-spotted_spider_mite | 1676 |
+| Tomato___Target_Spot | 1404 |
+| Tomato___Tomato_mosaic_virus | 373 |
+| Tomato___Tomato_Yellow_Leaf_Curl_Virus | 5357 |
+
+## 近重复与分组划分
+
+> 当前 `splits/` 为分组划分；早期图片级划分已废弃，A 必须使用当前版本；若已按旧划分训练需重训。
+
+- 方法：每张图计算 64-bit dHash，Hamming 距离 ≤ 4 视为近重复；完全重复副本先用 SHA-256 去除
+- 近重复组：226 组 / 481 张，最大组 6 张
+- 跨类近重复组：33 组，**只记录不合并**（避免把不同病害强行绑在一起；可能含 dHash 误报）
+- 划分方式：按类别分层，但**整组进入同一 split**；组内分配确定性
+- `scripts/build_splits.py` 默认启用近重复分组；`--no-near-duplicates` 可退回图片级划分
+- 结果：旧图片级划分有 109 组 / 232 张近重复图跨 split；新划分 **0 组**
+- 类别比例最大偏差 0.3%；38 类在 train/val/test 均覆盖
+
+## 复现命令
+
+```powershell
+python scripts/scan_dataset.py --hash-duplicates
+python scripts/analyze_near_duplicates.py --max-distance 4
+python scripts/build_splits.py --seed 42
+```
+
+- 扫描报告：`results/data_scan.json`（Git 忽略）
+- 近重复分析：`results/near_duplicates.json`（Git 忽略）
+- 分组划分报告：`results/grouped_splits_report.json`（Git 忽略）
+- 划分结果：`splits/train.csv`、`splits/val.csv`、`splits/test.csv`、`splits/class_to_idx.json`（已提交）
+
+## PlantDoc 外部评估集审计
+
+- 来源版本：`pratikkayal/PlantDoc-Dataset` `master` @ `5467f6012d78d1c446145d5f582da6096f852ae8`
+- 获取日期：2026-11-20（test）、2026-11-24（train）
+- 使用划分：`train` + `test`
+- 类别数：28
+- 图片数：2,572（test 236 + train 2,336）
+- 健康叶：10 类 / 847 张；病害叶：18 类 / 1,725 张
+- 损坏图片：0
+- 类内重复：0；跨类完全相同图片 1 组（保留并记录）
+- 文件名处理：82 个 train + 5 个 test 含 `?` 的文件已重命名；7 个过长 train 文件名已缩短
+- 类别映射：`splits/plantdoc_class_map.json`（28/28 类可映射到 PlantVillage 38 类）
+- 外部评估清单：`splits/plantdoc_eval.csv`
+- 用途限制：仅外部评估，不参与训练或调参
+
+复现：
+
+```powershell
+python scripts/scan_dataset.py --data-root data/plantdoc
+python scripts/scan_dataset.py --data-root data/plantdoc_train
+python scripts/build_plantdoc_eval.py
+```
