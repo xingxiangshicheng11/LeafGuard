@@ -1,6 +1,6 @@
 # 数据与评估设计（论文 / PPT 草稿）
 
-> 状态：数据采集、审计、划分和外部评估准备已完成；**实验结果指标尚未运行，本文不填写任何编造数值**，待 A 产出 checkpoint 后补充。
+> 状态（更新于 2026-11-26）：实验已完成。**当前主线为方案 B（PlantVillage + PlantWild，132 类）**，真实结果见 `docs/model_notes.md` 与 `docs/domain_gap_analysis.md`。本文以下"38 类 / PlantDoc 2,572"为最初设计稿，保留作对照。PlantDoc 源 2,572，A 本地可用 2,564、132 类测试清单 2,561（差异见 `docs/data_consistency.md`）。所有数值均为真实运行，未编造。
 
 ## 一、论文正文草稿
 
